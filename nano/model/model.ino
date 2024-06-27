@@ -1,4 +1,4 @@
-// including math header file
+#include <Arduino.h>
 #include <math.h>
 
 // define the coefficients from the logistic regression model
@@ -47,24 +47,13 @@ float scale_value(float value, float mean, float std) {
 }
 
 void setup() {
-
     // initialize serial communication for debugging
     Serial.begin(115200);
-
-    for (int i = 0; i < 20; i++) {
-      Serial.println();
-    }
-    
-    Serial.println("--------------------------------------------------------------------");
-    Serial.println("Enter comma separated data:");
-    Serial.println("--------------------------------------------------------------------");
 }
 
 void loop() {
-
     // check if data is available in the serial buffer
     if (Serial.available() > 0) {
-
         // read the input string
         String input = Serial.readStringUntil('\n');
 
@@ -84,34 +73,18 @@ void loop() {
 
         // check if we have the correct number of input values
         if (index == 4) {
-            
-            // print the original input values
-            Serial.print("Sepal Length: ");
-            Serial.println(values[0]);
-            Serial.print("Sepal Width: ");
-            Serial.println(values[1]);
-            Serial.print("Petal Length: ");
-            Serial.println(values[2]);
-            Serial.print("Petal Width: ");
-            Serial.println(values[3]);
 
             // predict the probability with scaled values
             float probability = predict(values[0], values[1], values[2], values[3]);
 
             if(probability > 0.5) {
-              Serial.println("Detected Species: Versicolor");
+              Serial.println("Versicolor");
             } else {
-              Serial.println("Detected Species: Setosa");
+              Serial.println("Setosa");
             }
 
         } else {
-            Serial.println("Error! Invalid number of data entered!");
+            Serial.println("ERROR!!");
         }
-
-        Serial.println("--------------------------------------------------------------------");
-
-        // prompt for new input
-        Serial.println("Enter comma separated data:");
-        Serial.println("--------------------------------------------------------------------");
     }
 }
